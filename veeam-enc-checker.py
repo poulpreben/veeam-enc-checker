@@ -39,16 +39,17 @@ for vbm in vbms:
 	tree = etree.parse(vbm)
 	root = tree.getroot()
 
-	if 'EncryptionState' in root[0].attrib:
-		print("Backup {0} is encrypted.".format(root[0].attrib['JobName']))
-	else:
-		message = "ALERT! Unencrypted backup job {0}. Full path: {1}.".format(root[0].attrib['JobName'], job_full_path)
-		print(message)
+	for backup in root.iter('Backup'):
+		if 'EncryptionState' in backup.attrib:
+			print("Backup {0} is encrypted.".format(backup.attrib['JobName']))
+		else:
+			message = "ALERT! Unencrypted backup job {0}. Full path: {1}.".format(backup.attrib['JobName'], job_full_path)
+			print(message)
 
-		if pushover is True:
-			data = { 'token': config['Pushover'].get('AppKey'), 'user': config['Pushover'].get('UserKey'), 'message': message }
-			r = requests.post('https://api.pushover.net/1/messages.json', data=data)
-		
-		if auto_purge is True:
-			print("(Not actually...) Proceeding to delete {0}".format(job_full_path))
-			# shutil.rmtree(job_full_path)
+			if pushover is True:
+				data = { 'token': config['Pushover'].get('AppKey'), 'user': config['Pushover'].get('UserKey'), 'message': message }
+				r = requests.post('https://api.pushover.net/1/messages.json', data=data)
+
+			if auto_purge is True:
+				print("(Not actually...) Proceeding to delete {0}".format(job_full_path))
+				# shutil.rmtree(job_full_path)
