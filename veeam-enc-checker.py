@@ -29,7 +29,6 @@ print("Searching for VBM files in:  {0}".format(directory))
 print("Auto purge enabled:          {0}".format(auto_purge))
 print("")
 
-#result = [y for x in os.walk(directory) for y in glob(os.path.join(x[0], '*.vbm'))]
 vbms = glob(directory + '/**/*.vbm', recursive=True)
 
 for vbm in vbms:
