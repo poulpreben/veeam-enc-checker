@@ -17,8 +17,9 @@ config.read('config.ini')
 if args.dir:
 	directory = args.dir
 else:
-	directory = config['enc-checker'].get('Directory')
-	if not directory:
+	try:
+		directory = config['enc-checker'].get('Directory')
+	except:
 		print("You must specify the root directory either with --dir, or in config.ini. Exiting")
 		sys.exit(2)
 
