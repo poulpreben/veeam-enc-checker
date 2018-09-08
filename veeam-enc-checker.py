@@ -41,7 +41,7 @@ for vbm in vbms:
 	root = tree.getroot()
 
 	for backup in root.iter('Backup'):
-		if 'EncryptionState' in backup.attrib:
+		if 'EncryptionState' in backup.attrib and backup.attrib['EncryptionState'] is not "0":
 			print("Backup {0} is encrypted.".format(backup.attrib['JobName']))
 		else:
 			message = "ALERT! Unencrypted backup job {0}. Full path: {1}.".format(backup.attrib['JobName'], job_full_path)
